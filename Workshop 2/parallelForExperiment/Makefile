@@ -1,5 +1,5 @@
 CC=mpicc
-CCFLAGS=-Os -Wall -g -march=core-avx2 -msse2  
+CCFLAGS=-Ofast -Wall -g -pipe -fopenmp
 LDFLAGS=
 LIBS=-lpng -lm
 

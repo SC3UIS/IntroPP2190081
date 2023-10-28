@@ -5,6 +5,12 @@
 #include <string.h>
 #include <assert.h>
 #include <mpi.h>
+/*
+ * OpenMP was added to parallelize the numerous for loops within
+ * This way, we can use the available threads to further optimize the recurrent
+ * operations with the added compiler flags mentioned in the Makefile
+ */
+#include <omp.h>
 
 #include "heat.h"
 
@@ -64,6 +70,9 @@ void evolve_interior(field *curr, field *prev, double a, double dt)
      * are not updated. */
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
+
+    //Parallelized 
+    #pragma omp parallel for
     for (i = 2; i < curr->nx; i++) {
         for (j = 2; j < curr->ny; j++) {
             ic = idx(i, j, width);
@@ -98,63 +107,70 @@ void evolve_edges(field *curr, field *prev, double a, double dt)
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
     i = 1;
-    for (j = 1; j < curr->ny + 1; j++) {
-        ic = idx(i, j, width);
-        iu = idx(i+1, j, width);
-        id = idx(i-1, j, width);
-        ir = idx(i, j+1, width);
-        il = idx(i, j-1, width);
-        curr->data[ic] = prev->data[ic] + a * dt *
-                           ((prev->data[iu] -
-                             2.0 * prev->data[ic] +
-                             prev->data[id]) / dx2 +
-                            (prev->data[ir] -
-                             2.0 * prev->data[ic] +
-                             prev->data[il]) / dy2);
-    }
-    i = curr -> nx;
-    for (j = 1; j < curr->ny + 1; j++) {
-        ic = idx(i, j, width);
-        iu = idx(i+1, j, width);
-        id = idx(i-1, j, width);
-        ir = idx(i, j+1, width);
-        il = idx(i, j-1, width);
-        curr->data[ic] = prev->data[ic] + a * dt *
-                           ((prev->data[iu] -
-                             2.0 * prev->data[ic] +
-                             prev->data[id]) / dx2 +
-                            (prev->data[ir] -
-                             2.0 * prev->data[ic] +
-                             prev->data[il]) / dy2);
-    }
-    j = 1;
-    for (i = 1; i < curr->nx + 1; i++) {
-        ic = idx(i, j, width);
-        iu = idx(i+1, j, width);
-        id = idx(i-1, j, width);
-        ir = idx(i, j+1, width);
-        il = idx(i, j-1, width);
-        curr->data[ic] = prev->data[ic] + a * dt *
-                           ((prev->data[iu] -
-                             2.0 * prev->data[ic] +
-                             prev->data[id]) / dx2 +
-                            (prev->data[ir] -
-                             2.0 * prev->data[ic] +
-                             prev->data[il]) / dy2);
-    }
-    j = curr -> ny;
-    for (i = 1; i < curr->nx + 1; i++) {
-        ic = idx(i, j, width);
-        iu = idx(i+1, j, width);
-        id = idx(i-1, j, width);
-        ir = idx(i, j+1, width);
-        il = idx(i, j-1, width);
-        curr->data[ic] = prev->data[ic] + a * dt *
-                           ((prev->data[iu] -
-                             2.0 * prev->data[ic] +
-                             prev->data[id]) / dx2 +
-                            (prev->data[ir] -
-                             2.0 * prev->data[ic] +
-                             prev->data[il]) / dy2);
+    #pragma omp parallel
+    {
+      #pragma omp for 
+      for (j = 1; j < curr->ny + 1; j++) {
+          ic = idx(i, j, width);
+          iu = idx(i+1, j, width);
+          id = idx(i-1, j, width);
+          ir = idx(i, j+1, width);
+          il = idx(i, j-1, width);
+          curr->data[ic] = prev->data[ic] + a * dt *
+                             ((prev->data[iu] -
+                               2.0 * prev->data[ic] +
+                               prev->data[id]) / dx2 +
+                             (prev->data[ir] -
+                              2.0 * prev->data[ic] +
+                               prev->data[il]) / dy2);
+      }
+      i = curr -> nx;
+      #pragma omp for
+      for (j = 1; j < curr->ny + 1; j++) {
+          ic = idx(i, j, width);
+          iu = idx(i+1, j, width);
+          id = idx(i-1, j, width);
+          ir = idx(i, j+1, width);
+          il = idx(i, j-1, width);
+          curr->data[ic] = prev->data[ic] + a * dt *
+                            ((prev->data[iu] -
+                              2.0 * prev->data[ic] +
+                              prev->data[id]) / dx2 +
+                             (prev->data[ir] -
+                              2.0 * prev->data[ic] +
+                               prev->data[il]) / dy2);
+      }
+      j = 1;
+      #pragma omp for
+      for (i = 1; i < curr->nx + 1; i++) {
+          ic = idx(i, j, width);
+          iu = idx(i+1, j, width);
+          id = idx(i-1, j, width);
+          ir = idx(i, j+1, width);
+          il = idx(i, j-1, width);
+          curr->data[ic] = prev->data[ic] + a * dt *
+                             ((prev->data[iu] -
+                               2.0 * prev->data[ic] +
+                               prev->data[id]) / dx2 +
+                              (prev->data[ir] -
+                               2.0 * prev->data[ic] +
+                              prev->data[il]) / dy2);
+      }
+      j = curr -> ny;
+      #pragma omp for
+      for (i = 1; i < curr->nx + 1; i++) {
+          ic = idx(i, j, width);
+          iu = idx(i+1, j, width);
+          id = idx(i-1, j, width);
+          ir = idx(i, j+1, width);
+          il = idx(i, j-1, width);
+          curr->data[ic] = prev->data[ic] + a * dt *
+                             ((prev->data[iu] -
+                               2.0 * prev->data[ic] +
+                               prev->data[id]) / dx2 +
+                              (prev->data[ir] -
+                               2.0 * prev->data[ic] +
+                               prev->data[il]) / dy2);
+      }
     }
 }
