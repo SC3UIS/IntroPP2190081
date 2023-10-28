@@ -26,4 +26,19 @@ Para ejecutar el código
     make
     mpirun -np 4 ./heat_mpi
 
+Dentro de las observaciones:
+
+  Tiempo promedio de ejecución (Implementación con OpenMP): 53 seg
+  Tiempo promedio de ejecución (Solución estable):          2.5 seg
+
+# Resultados en pantalla instancia local:                                                            
+  
+## Con OpenMP:
+    <img src = img/1.png>
+
+## Compiler Flags:
+    <img src = img/2.png>
+  
+
+
 
