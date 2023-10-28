@@ -1,5 +1,8 @@
 # Evaluación 2
 
+## César Luis Hurtado - 2191957
+## Juan Pablo Cerinza - 2190081
+
 Se experimentó implementando OpenMP como un acercamiento intuitivo ante los bucles y cálculos repetitivos
 que están en el archivo core.c.
 

@@ -1,5 +1,9 @@
 /* Main solver routines for heat equation solver */
 
+/*
+ * Modified by: Juan Pablo Cerinza and César Luis Hurtado
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
