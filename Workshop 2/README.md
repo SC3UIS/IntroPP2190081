@@ -37,10 +37,10 @@ Dentro de las observaciones:
 # Resultados en pantalla instancia local:                                                            
   
 ## Con OpenMP:
-    <img src = img/1.png>
+<img src = img/1.png>
 
 ## Compiler Flags:
-    <img src = img/2.png>
+<img src = img/2.png>
   
 
 
