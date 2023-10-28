@@ -1,4 +1,4 @@
-#Evaluación 2
+# Evaluación 2
 
 Se experimentó implementando OpenMP como un acercamiento intuitivo ante los bucles y cálculos repetitivos
 que están en el archivo core.c.
@@ -10,7 +10,7 @@ Por lo tanto, se descartó esta opción como viable tras múltiples pruebas en u
 
 No obstante, en cambio, se implementaron más banderas a nivel del compilador, precisamente 
 
-  -Os
+    -Os
 
 Debido a que implementa una bandera que optimiza funciones inline, tal como la función idx,
 que se llama repetidas veces en el archivo core.c.
@@ -18,12 +18,12 @@ que se llama repetidas veces en el archivo core.c.
 De esta misma manera, se implementaron las banderas -march=core-avx2 -msse2, tras haber
 ejecutado 
   
-  $ cat /proc/cpuinfo 
+    $ cat /proc/cpuinfo 
 
 
 Para ejecutar el código
 
-  make
-  mpirun -np 4 ./heat_mpi
+    make
+    mpirun -np 4 ./heat_mpi
 
 
