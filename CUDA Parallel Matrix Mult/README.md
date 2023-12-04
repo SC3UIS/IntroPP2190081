@@ -29,7 +29,9 @@ were done in small block sized batches each accessed by its its corresponding th
 
 Run the following while on this directory:
 
-```nvcc matrixMult.cu -arch=sm_70 -o matrixMult -run```
+```shell
+nvcc matrixMult.cu -arch=sm_70 -o matrixMult -run
+```
 
 ## Code execution in GUANE
 
