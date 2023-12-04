@@ -10,8 +10,11 @@ $$c_{ij} = \sum_{k = 1}^{m} a_{ik}b_{kj} $$
 
 Matrices were flattened to further optimize the calculations, and to accomodate to CUDA'S
 indexing, as described here:
-<img src="./img/cuda_indexing.png" alt="CUDA indexing">
-CUDA indexing. (2017, January 25). developer.nvidia.com. https://developer.nvidia.com/blog/even-easier-introduction-cuda/
+<p align="center">
+<img src="./img/cuda_indexing.png" alt="CUDA indexing" style="width:60%;">
+    <em><br>CUDA indexing. (2017, January 25). developer.nvidia.com. https://developer.nvidia.com/blog/even-easier-introduction-cuda/</em>
+</p> 
+
 
 Given the a, b, c_cpu and c_gpu flattened square matrices with a maximum dimension of 2000 integers
 
@@ -25,6 +28,7 @@ were done in small block sized batches each accessed by its its corresponding th
 ## Compiling and executing locally
 
 Run the following while on this directory:
+
 ```nvcc matrixMult.cu -arch=sm_70 -o matrixMult -run```
 
 ## Code execution in GUANE
